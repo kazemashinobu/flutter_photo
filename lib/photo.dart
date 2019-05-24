@@ -18,7 +18,7 @@ export 'package:photo/src/delegate/checkbox_builder_delegate.dart';
 export 'package:photo/src/delegate/loading_delegate.dart';
 export 'package:photo/src/delegate/sort_delegate.dart';
 export 'package:photo/src/provider/i18n_provider.dart'
-    show I18NCustomProvider, I18nProvider, CNProvider, ENProvider;
+    show I18NCustomProvider, I18nProvider, CNProvider, ZhTwProvider, ENProvider;
 export 'package:photo/src/entity/options.dart' show PickType;
 export 'package:photo/src/delegate/badge_delegate.dart';
 
@@ -78,6 +78,7 @@ class PhotoPicker {
     PickType pickType = PickType.all,
     BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
     List<AssetPathEntity> photoPathList,
+    Function() noPermissionCallback,
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
@@ -115,6 +116,7 @@ class PhotoPicker {
       options,
       provider,
       photoPathList,
+      noPermissionCallback,
     );
   }
 
@@ -123,17 +125,12 @@ class PhotoPicker {
     Options options,
     I18nProvider provider,
     List<AssetPathEntity> photoList,
+    Function() noPermissionCallback,
   ) async {
     var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
-      var result = await showDialog(
-        context: context,
-        builder: (ctx) => NotPermissionDialog(
-              provider.getNotPermissionText(options),
-            ),
-      );
-      if (result == true) {
-        PhotoManager.openSetting();
+      if (noPermissionCallback != null) {
+        noPermissionCallback();
       }
       return null;
     }

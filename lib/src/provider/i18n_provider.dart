@@ -24,6 +24,8 @@ abstract class I18nProvider {
 
   static const I18nProvider chinese = CNProvider();
 
+  static const I18nProvider traditionalChinese = ZhTwProvider();
+
   static const I18nProvider english = ENProvider();
 }
 
@@ -69,6 +71,51 @@ class CNProvider extends I18nProvider {
   I18NPermissionProvider getNotPermissionText(Options options) {
     return I18NPermissionProvider(
         cancelText: "取消", sureText: "去开启", titleText: "没有访问相册的权限");
+  }
+}
+
+class ZhTwProvider extends I18nProvider {
+  const ZhTwProvider() : super._();
+
+  @override
+  String getTitleText(Options options) {
+    return "圖片選擇";
+  }
+
+  @override
+  String getPreviewText(Options options, SelectedProvider selectedProvider) {
+    return "預覽(${selectedProvider.selectedCount})";
+  }
+
+  @override
+  String getSureText(Options options, int currentCount) {
+    return "確定($currentCount/${options.maxSelected})";
+  }
+
+  @override
+  String getSelectedOptionsText(Options options) {
+    return "選擇";
+  }
+
+  @override
+  String getMaxTipText(Options options) {
+    return "您已經選擇了${options.maxSelected}張圖片";
+  }
+
+  @override
+  String getAllGalleryText(Options options) {
+    return "全部圖片";
+  }
+
+  @override
+  String loadingText() {
+    return "讀取中...";
+  }
+
+  @override
+  I18NPermissionProvider getNotPermissionText(Options options) {
+    return I18NPermissionProvider(
+        cancelText: "取消", sureText: "去開啟", titleText: "沒有訪問相簿的權限");
   }
 }
 

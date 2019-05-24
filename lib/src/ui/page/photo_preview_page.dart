@@ -162,7 +162,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   Container _buildCheckbox() {
     return Container(
       constraints: BoxConstraints(
-        maxWidth: 150.0,
+        maxWidth: MediaQuery.of(context).size.width,
       ),
       child: StreamBuilder<int>(
         builder: (ctx, snapshot) {
